@@ -1,0 +1,92 @@
+PROJECT EXPLANATION FOR INTERVIEW
+=================================
+
+This project is a full-stack Netflix Clone application. It mimics the core functionality of Netflix, including user authentication (Sign Up/Login), browsing movies by category, and playing movie trailers.
+
+TECH STACK:
+-----------
+- Frontend: React.js (Vite), CSS (Vanilla), Firebase (Configured but Auth logic uses custom Backend), Socket.io Client.
+- Backend: Node.js, Express.js, MongoDB (Mongoose), Socket.io, JWT (JSON Web Tokens) for authentication.
+- External APIs: TMDB (The Movie Database) for movie data.
+
+--------------------------------------------------------------------------------
+PART 1: FRONTEND (Client-Side)
+Folder: frontend/
+--------------------------------------------------------------------------------
+
+The frontend is built with React and handles what the user sees and interacts with.
+
+1.  Root Files:
+    -   **index.html**: This is the HTML entry point. The browser loads this file first. It contains a `<div id="root"></div>` where the entire React app is injected.
+    -   **src/main.jsx**: The JavaScript entry point. It finds the `root` div in `index.html` and renders the `<App />` component inside it. It also wraps the app in `BrowserRouter` to enable navigation between pages.
+    -   **src/App.jsx**: The main component that acts as a container.
+        -   **Work**: It defines the "Routes" of the app (which page to show for which URL).
+        -   **Why used**: To switch between Home (`/`), Login (`/login`), and Player (`/player/:id`) pages without reloading the browser. It also checks if a user is logged in (via `localStorage`) and redirects them accordingly.
+
+
+2.  Pages (src/pages/):
+    -   **Home/Home.jsx**: The main dashboard.
+        -   **Work**: Displays the Navbar, a Hero banner (big featured movie), multiple rows of movie cards (`TitleCards`), and the Footer.
+        -   **Why used**: To be the central hub where users discover content.
+    -   **Login/Login.jsx**: The authentication page.
+        -   **Work**: Allows users to "Sign In" or "Sign Up". It sends a request to your backend API (`/api/auth/login` or `/api/auth/register`). On success, it saves a "token" in the browser's `localStorage` to keep the user logged in.
+        -   **Why used**: To secure the app so only registered users can access it.
+    -   **Player/Player.jsx**: The video player page.
+        -   **Work**: It takes the "Movie ID" from the URL, fetches that movie's trailer from the TMDB API, and plays it using a YouTube iframe.
+        -   **Why used**: To allow users to watch content (trailers).
+
+
+3.  Components (src/components/):
+    -   **Navbar/Navbar.jsx**: The top navigation bar.
+        -   **Work**: Shows the logo and menu links. It changes color when you scroll down (transparent to black). It also has a "Sign Out" feature that clears the user's token.
+        -   **Why used**: For navigation and branding.
+    -   **TitleCards/TitleCards.jsx**: The horizontal list of movie posters.
+        -   **Work**: It accepts a "category" prop (e.g., "popular", "top_rated"), fetches that list from TMDB API, and displays them. You can scroll horizontally.
+        -   **Why used**: Reusable component to show different lists of movies easily.
+    -   **Footer/Footer.jsx**: The bottom section.
+        -   **Work**: Displays static links (Help Center, Terms of Use, etc.) and social icons.
+        -   **Why used**: Standard website footer for information.
+
+
+--------------------------------------------------------------------------------
+PART 2: BACKEND (Server-Side)
+Folder: backend/
+--------------------------------------------------------------------------------
+
+The backend handles data, security, and real-time communication.
+
+1.  Core File:
+    -   **index.js**: The heart of the backend server.
+        -   **Work**:
+            1.  Starts the Express server.
+            2.  Connects to the MongoDB database.
+            3.  Defines API routes (`/api/auth`, `/api/user`).
+        -   **Why used**: To tie everything together and listen for requests from the frontend.
+
+2.  Database Models (models/):
+    -   **user.js**: The blueprint (Schema) for a User.
+        -   **Work**: Defines that a user must have a `name`, `email` (unique), and `password`.
+        -   **Why used**: To ensure all data saved to MongoDB follows a strict structure.
+
+3.  Routes (routes/):
+    -   **auth.js**: Authentication logic.
+        -   **Work**:
+            -   `/register`: Accepts user info, hashes the password (encrypts it), saves to DB, and returns a token.
+            -   `/login`: Checks email, verifies password, and returns a token.
+        -   **Why used**: To handle user sign-up and login securely.
+    -   **user.js**: User-related routes.
+        -   **Work**: Currently has a `/profile` route to get user info.
+        -   **Why used**: To fetch private user data.
+
+4.  Middleware (middleware/):
+    -   **authmiddleware.js**: Security guard.
+        -   **Work**: It intercepts requests to protected routes. It checks for a valid "Token" in the header. If valid, it lets the request pass; otherwise, it resolves an error.
+        -   **Why used**: To prevent unauthorized users from accessing private data.
+
+
+
+--------------------------------------------------------------------------------
+SUMMARY for INTERVIEW:
+"I built a full-stack Netflix Clone.
+For the **Frontend**, I used **React** to create a dynamic SPA (Single Page Application). I organized it into **Pages** (Home, Login, Player) and reusable **Components** (Navbar, TitleCards). I used **React Router** for navigation and **Context/Local Storage** to manage user sessions.
+For the **Backend**, I built a REST API using **Node.js and Express**. I used **MongoDB** to store user data and **JWT** for secure authentication. I also implemented **Socket.io** to enable real-time features like video synchronization for a watch-party experience."
