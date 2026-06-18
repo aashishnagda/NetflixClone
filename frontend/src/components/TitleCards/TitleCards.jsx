@@ -40,8 +40,17 @@ const TitleCards = ({ title, category }) => {
       <h2>{title ? title : "Popular on Netflix:"}</h2>
       <div className="card-list" ref={cardsRef} >{apiData.map((card, index) => {
         return <Link to={`/player/${card.id}`} className="card" key={index}>
-          <img src={`https://image.tmdb.org/t/p/w500` + card.backdrop_path} alt="" />
-          <p>{card.original_title}</p>
+          <img src={`https://image.tmdb.org/t/p/w500` + card.backdrop_path} alt={card.original_title} />
+          <div className="card-overlay">
+            <div className="card-info">
+              <h3>{card.original_title}</h3>
+              <div className="card-meta">
+                <span className="rating">⭐ {card.vote_average.toFixed(1)}</span>
+                <span className="year">{new Date(card.release_date).getFullYear()}</span>
+              </div>
+              <p className="description">{card.overview.substring(0, 100)}...</p>
+            </div>
+          </div>
         </Link>
       })}</div>
 

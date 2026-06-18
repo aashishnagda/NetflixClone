@@ -49,6 +49,7 @@
     background:white;
     border-radius:4px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .hero-btns .btn.dark-btn{
@@ -60,10 +61,12 @@
 
 .hero-btns .btn:hover{
     background: #ffffffbf;
+    transform: scale(1.05);
 }
 
 .hero-btns .btn.dark-btn:hover{
     background: #6d6d6e66;
+    transform: scale(1.05);
 }
 
 .more-cards{

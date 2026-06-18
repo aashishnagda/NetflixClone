@@ -5,7 +5,7 @@ import "./Login.css";
 import logo from "../../assets/logo.png";
 import netflix_spinner from "../../assets/netflix_spinner.gif";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "";
 const BASE_URL = `${API_URL}/api/auth`;
 
 const Login = () => {

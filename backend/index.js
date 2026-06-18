@@ -4,10 +4,17 @@ import mongoose from "mongoose";  //ODM (Object Data Modeling) library for Mongo
 import cors from "cors";          //Cross-Origin Resource Sharing.Allows frontend (different port/domain) to access backend.
 import dotenv from "dotenv";        //To load environment variables from .env file.
 import http from "http";          //To create an HTTP server.
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 
 dotenv.config();         //Reads .env file and loads variables into:process.env
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendDistPath = path.join(__dirname, "../frontend/dist");
 
 const app = express();
 
@@ -24,12 +31,18 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
-/* ---------------- ROUTE ---------------- */
-app.get("/", (req, res) => {
-  res.send("Backend running");
-});
+/* ---------------- STATIC FRONTEND ---------------- */
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
 
-
+  app.get(/^(?!\/api).*/, (req, res) => {
+    res.sendFile(path.join(frontendDistPath, "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("Backend running");
+  });
+}
 
 const server = http.createServer(app);
 
